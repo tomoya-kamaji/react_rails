@@ -1,4 +1,4 @@
-import React, { Fragment, useReducer, useEffect } from 'react';
+import React, { Fragment, useReducer, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
@@ -60,12 +60,19 @@ const FoodsList = styled.div`
 const ItemWrapper = styled.div`
   margin: 16px;
 `;
-// --- ここまで追加 ---
 
+// --- ここまで追加 ---
 export const Foods = ({
   match
 }) => {
+
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
+  const initialState = {
+    isOpenOrderDialog: false,
+    selectedFood: null,
+    selectedFoodCount: 1,
+  }
+  const [state, setState] = useState(initialState);
 
   useEffect(() => {
     dispatch({ type: foodsActionTyps.FETCHING });
@@ -109,7 +116,13 @@ export const Foods = ({
               <ItemWrapper key={food.id}>
                 <FoodWrapper
                   food={food}
-                  onClickFoodWrapper={(food) => console.log(food)}
+                  onClickFoodWrapper={
+                    (food) => setState({
+                      ...state,
+                      isOpenOrderDialog: true,
+                      selectedFood: food,
+                    })
+                  }
                   imageUrl={FoodImage}
                 />
               </ItemWrapper>

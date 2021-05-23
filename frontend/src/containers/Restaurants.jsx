@@ -66,14 +66,17 @@ const SubText = styled.p`
   font-size: 12px;
 `;
 // --- ここまで追加 ---
-
 export const Restaurants = () => {
+  // ここでstateとdispatchという関数を使うことができる。
   const [state, dispatch] = useReducer(restaurantsReducer, initialState);
 
+
+  // 呼び出されたタイミング
   useEffect(() => {
+    // ここはローディング画面を表示するため。
     dispatch({ type: restaurantsActionTyps.FETCHING });
 
-    // ここでRailsのAPIを呼び出している。レンダリング時に1度だけ呼び出す
+    // ここでRailsのAPIを呼び出している。レンダリング時に1度だけ呼び出す。レストラン。APIが呼び出されたら、表示を変更する。
     fetchRestaurants()
     .then((data) =>
       dispatch({
@@ -94,6 +97,7 @@ export const Restaurants = () => {
       <MainCoverImageWrapper>
         <MainCover src={MainCoverImage} alt="main cover" />
       </MainCoverImageWrapper>
+
       <RestaurantsContentsList>
         {
           state.fetchState === REQUEST_STATE.LOADING ?
